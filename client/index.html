@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EventSource Example</title>
+  </head>
+  <body style="background-color: #1a1a1d; color: #fff4b7">
+    <h1>Server-Sent Events</h1>
+    <h4>Messages</h4>
+    <div id="messages"></div>
+    <h4>Notifications</h4>
+    <div id="notifications"></div>
+    <script>
+      const eventSource = new EventSource("http://localhost:3000/stream");
+
+      eventSource.onmessage = (event) => {
+        const messagesDiv = document.getElementById("messages");
+        const message = document.createElement("p");
+        message.textContent = event.data;
+        messagesDiv.appendChild(message);
+      };
+
+      eventSource.addEventListener("notification", (event) => {
+        const notificationsDiv = document.getElementById("notifications");
+        const notification = document.createElement("p");
+        notification.textContent = event.data;
+        notificationsDiv.appendChild(notification);
+      });
+
+      eventSource.onerror = (error) => {
+        console.error("EventSource error:", error);
+      };
+    </script>
+  </body>
+</html>
